@@ -48,7 +48,16 @@ const UserBox = styled(Box)(({ theme }) => ({
 }));
 
 const Navbar = () => {
-  const [isUserMenuOpen, setUserMenuStatus] = useState(false);
+  const [userMenuEl, setUserMenuEl] = useState(null);
+  const isUserMenuOpen = Boolean(userMenuEl);
+
+  const handleAvatarClick = (event) => {
+    setUserMenuEl(event.currentTarget);
+  };
+
+  const closeUserMenu = () => {
+    setUserMenuEl(null);
+  };
   return (
     <AppBar position="sticky">
       <StyledToolbar>
@@ -75,46 +84,56 @@ const Navbar = () => {
           <InputBase placeholder="Search..." fullWidth />
         </Search>
         <Icons>
-          <Badge badgeContent={5} color="error">
+          <Badge badgeContent={5} color="error" sx={{ cursor: "pointer" }}>
             <EmailIcon />
           </Badge>
-          <Badge badgeContent={2} color="error">
+          <Badge badgeContent={2} color="error" sx={{ cursor: "pointer" }}>
             <NotificationsActiveIcon />
           </Badge>
           <Avatar
-            sx={{ width: 30, height: 30 }}
-            onClick={() => setUserMenuStatus(true)}
+            sx={{ width: 30, height: 30, cursor: "pointer" }}
+            id="user-avatar"
+            aria-controls={isUserMenuOpen ? "user-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={isUserMenuOpen ? "true" : undefined}
+            onClick={handleAvatarClick}
           >
             <Typography variant="button">KR</Typography>
           </Avatar>
         </Icons>
         <UserBox>
           <Avatar
-            sx={{ width: 30, height: 30 }}
-            onClick={() => setUserMenuStatus(true)}
+            sx={{ width: 30, height: 30, cursor: "pointer" }}
+            id="user-avatar"
+            aria-controls={isUserMenuOpen ? "user-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={isUserMenuOpen ? "true" : undefined}
+            onClick={handleAvatarClick}
           >
             <Typography variant="button">KR</Typography>
           </Avatar>
           <Typography variant="body2">Kaustubh Raghav</Typography>
         </UserBox>
+        <Menu
+          id="user-menu"
+          aria-labelledby="user-avatar"
+          anchorEl={userMenuEl}
+          open={isUserMenuOpen}
+          onClose={closeUserMenu}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "left",
+          }}
+        >
+          <MenuItem onClick={closeUserMenu}>Profile</MenuItem>
+          <MenuItem onClick={closeUserMenu}>My account</MenuItem>
+          <MenuItem onClick={closeUserMenu}>Logout</MenuItem>
+        </Menu>
       </StyledToolbar>
-      <Menu
-        id="user-menu"
-        open={isUserMenuOpen}
-        onClose={() => setUserMenuStatus(false)}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-      >
-        <MenuItem>Profile</MenuItem>
-        <MenuItem>My account</MenuItem>
-        <MenuItem>Logout</MenuItem>
-      </Menu>
     </AppBar>
   );
 };
