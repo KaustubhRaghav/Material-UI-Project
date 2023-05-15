@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   AppBar,
   styled,
@@ -7,6 +8,8 @@ import {
   InputBase,
   Badge,
   Avatar,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import {
   Menu as MenuIcon,
@@ -45,6 +48,7 @@ const UserBox = styled(Box)(({ theme }) => ({
 }));
 
 const Navbar = () => {
+  const [isUserMenuOpen, setUserMenuStatus] = useState(false);
   return (
     <AppBar position="sticky">
       <StyledToolbar>
@@ -77,17 +81,40 @@ const Navbar = () => {
           <Badge badgeContent={2} color="error">
             <NotificationsActiveIcon />
           </Badge>
-          <Avatar sx={{ width: 30, height: 30 }}>
+          <Avatar
+            sx={{ width: 30, height: 30 }}
+            onClick={() => setUserMenuStatus(true)}
+          >
             <Typography variant="button">KR</Typography>
           </Avatar>
         </Icons>
         <UserBox>
-          <Avatar sx={{ width: 30, height: 30 }}>
+          <Avatar
+            sx={{ width: 30, height: 30 }}
+            onClick={() => setUserMenuStatus(true)}
+          >
             <Typography variant="button">KR</Typography>
           </Avatar>
           <Typography variant="body2">Kaustubh Raghav</Typography>
         </UserBox>
       </StyledToolbar>
+      <Menu
+        id="user-menu"
+        open={isUserMenuOpen}
+        onClose={() => setUserMenuStatus(false)}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
+        <MenuItem>Profile</MenuItem>
+        <MenuItem>My account</MenuItem>
+        <MenuItem>Logout</MenuItem>
+      </Menu>
     </AppBar>
   );
 };
